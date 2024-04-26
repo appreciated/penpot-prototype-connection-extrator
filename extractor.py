@@ -13,21 +13,23 @@ def read_penpot_interactions(filename):
         # Definiere den Namespace für Penpot-SVG-Dateien
         ns = {'penpot': 'https://penpot.app/xmlns'}
 
-        # Finde alle Shape-Elemente, die ein Interactions-Element enthalten
-        shapes_with_interactions = root.findall('.//penpot:shape[penpot:interactions]', ns)
-        interactions_info = []
+        root_groups = root.findall('svg:g', {'svg': 'http://www.w3.org/2000/svg'})
+        for root_group in root_groups:
+            # Finde alle Shape-Elemente, die ein Interactions-Element enthalten
+            shapes_with_interactions = root_group.findall('.//penpot:shape[penpot:interactions]', ns)
+            interactions_info = []
 
-        for shape in shapes_with_interactions:
-            shape_name = shape.attrib['{https://penpot.app/xmlns}name']
-            interactions = []
-            for interaction in shape.findall('.//penpot:interaction', ns):
-                event_type = interaction.attrib['{https://penpot.app/xmlns}event-type']
-                destination = interaction.attrib['{https://penpot.app/xmlns}destination']
-                action_type = interaction.attrib['{https://penpot.app/xmlns}action-type']
-                interactions.append((event_type, destination, action_type))
-            interactions_info.append((shape_name, interactions))
+            for shape in shapes_with_interactions:
+                shape_name = shape.attrib['{https://penpot.app/xmlns}name']
+                interactions = []
+                for interaction in shape.findall('.//penpot:interaction', ns):
+                    event_type = interaction.attrib['{https://penpot.app/xmlns}event-type']
+                    destination = interaction.attrib['{https://penpot.app/xmlns}destination']
+                    action_type = interaction.attrib['{https://penpot.app/xmlns}action-type']
+                    interactions.append((event_type, destination, action_type))
+                interactions_info.append((root_group.get('id'), shape_name, interactions))
 
-        return interactions_info
+            return interactions_info
     except Exception as e:
         print(f"Fehler bei read_penpot_interactions: {e}")
         return []
