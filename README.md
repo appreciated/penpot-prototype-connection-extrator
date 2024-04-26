@@ -1,7 +1,7 @@
 # Penpot SVG Interaction Extractor
 
 ## Overview
-The "Penpot SVG Interaction Extractor" is a Python tool developed to parse SVG files exported from Penpot. It extracts useful information about the user interface and explores simple interactions that may be present in the design.
+The "Penpot SVG Interaction Extractor" is a Python tool developed to parse SVG files exported from Penpot. It extracts on a per view basis forms (groups) their fields and resolves simple connections between boards. The output is JSON.
 
 ## Features
 - Extract elements and their attributes from SVG files.
